@@ -455,5 +455,28 @@ function showProductsList()
     $products = readFromFile(PRODUCTS_FILE, []);
     return $products;
 
+function connect_to_database($username, $password, $dsn) {
+  try {
+    $conn = new PDO($dsn, $username, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    return $conn;
+  } catch(PDOException $e) {
+    echo "Connection failed: " . $e->getMessage();
+  }
+}
+
+// використання функції для підключення до бази даних
+$username = 'your_username';
+$password = 'your_password';
+$dsn = 'oci:dbname=your_database;charset=utf8';
+$conn = connect_to_database($username, $password, $dsn);
+
+// виконання запиту до бази даних
+$sql = "SELECT * FROM your_table";
+$stmt = $conn->query($sql);
+$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// закриття з'єднання з базою даних
+$conn = null;
 
 }
